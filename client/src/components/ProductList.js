@@ -1,15 +1,22 @@
 import React from 'react';
-import { Link } from '@reach/router'
+import { Link } from '@reach/router';
+import axios from 'axios';
 
 const ProductList = (props) => {
+    const {deleteProduct} = props;
+
+    
 
     return (
         <div>
             {props.product.map((item, i) => {
-                return <div>
-                    <Link to={"/product/" + item._id} key={i}>{item.productName}</Link>
-                </div>
+                return <p key={i}>
+                    <Link to={"/product/" + item._id}>{item.productName}</Link>
+                    <Link to={"/product/" + item._id + "/edit"}> Edit </Link>
+                    <button onClick={(e) => {deleteProduct(item._id)}}>Delete</button>
+                    </p>
             })}
+            
         </div>
     )
 }

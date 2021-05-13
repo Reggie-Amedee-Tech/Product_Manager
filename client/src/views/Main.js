@@ -4,9 +4,10 @@ import ProductForm from '../components/ProductForm'
 import ProductList from '../components/ProductList'
 
 
-const Main = () => {
-    const [product, setProduct] = useState([]);
+
+const Main = (props) => {
     const [loaded, setLoaded] = useState(false);
+    const {deleteProduct, product, setProduct} = props;
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/products')
@@ -16,12 +17,16 @@ const Main = () => {
         });
     },[])
 
+    
+    
+
+
     return(
         <div>
             <ProductForm/>
             <hr/>
             <h1>All Products:</h1>
-            {loaded && <ProductList product={product}/>}
+            {loaded && <ProductList product={product} deleteProduct={deleteProduct}/>}
         </div>
     )
 }

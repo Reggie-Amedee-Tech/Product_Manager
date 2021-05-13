@@ -1,30 +1,35 @@
-import React, { useState } from 'react';
-import axios from "axios";
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 
+const Update = (props) => {
+    const {id} = props;
+    const[productName, setProductName] = useState("");
+    const[productPrice, setProductPrice] = useState();
+    const[productDescription, setProductDescription] = useState("");
 
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/product/' + props.id)
+        .then(res => {
+            setProductName(res.data.productName);
+            setProductPrice(res.data.productPrice);
+            setProductDescription(res.data.productDescription);
+        })
+    }, [])
 
-const ProductForm = () => {
-    const [productName, setProductName] = useState("")
-    const [productPrice, setProductPrice] = useState()
-    const [productDescription, setProductDescription] = useState("")
-
-
-
-    const onSubmitHandler = (e) => {
+    const updateProduct = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/product', {
+        axios.put('http://localhost:8000/api/product/' + props.id, {
             productName,
             productPrice,
             productDescription
         })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+        .then(res => console.log(res))
     }
 
     return (
-        <form onSubmit={onSubmitHandler}>
+        <form onSubmit={updateProduct}>
             <div>
-                <h1>Product Manager</h1>
+                <h1>Update Product</h1>
                 <p>
                     <label>Product Name<br />
                         <input type="text" onChange={(e) => setProductName(e.target.value)} value={productName} />
@@ -48,4 +53,4 @@ const ProductForm = () => {
     )
 }
 
-export default ProductForm;
+export default Update;
