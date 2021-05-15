@@ -3,11 +3,10 @@ import React, {useEffect, useState} from 'react'
 import ProductForm from '../components/ProductForm'
 import ProductList from '../components/ProductList'
 
-
-
 const Main = (props) => {
     const [loaded, setLoaded] = useState(false);
-    const {deleteProduct, product, setProduct} = props;
+    const {deleteProduct, product, setProduct, createProduct} = props;
+    
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/products')
@@ -17,13 +16,9 @@ const Main = (props) => {
         });
     },[])
 
-    
-    
-
-
     return(
         <div>
-            <ProductForm/>
+            <ProductForm onSubmitProp={createProduct} initialProductName="" initialProductPrice="" initialProductDescription=""/>
             <hr/>
             <h1>All Products:</h1>
             {loaded && <ProductList product={product} deleteProduct={deleteProduct}/>}

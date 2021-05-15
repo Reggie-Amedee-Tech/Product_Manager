@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@reach/router';
-import axios from 'axios';
+
 
 const ProductList = (props) => {
     const {deleteProduct} = props;

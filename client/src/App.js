@@ -21,14 +21,22 @@ function App() {
         })
         
 }
+
+const createProduct = prod => {
+  axios.post('http://localhost:8000/api/product', prod )
+  .then(res=> {
+      setProduct([...product, res.data]);
+  })
+}
+
   
   
   return (
     <div className="App">
       <Router>
-        <Main path="/product" deleteProduct={deleteProduct} product={product} setProduct={setProduct}/>
+        <Main path="/product" deleteProduct={deleteProduct} product={product} setProduct={setProduct} createProduct={createProduct}/>
         <Detail path="/product/:id" deleteProduct={deleteProduct}/>
-        <Update path="/product/:id/edit"/>
+        <Update path="/product/:id/edit" product={product} setProduct={setProduct}/>
       </Router>
     </div>
   );

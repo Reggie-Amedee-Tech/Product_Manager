@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import ProductForm from '../components/ProductForm'
+import {navigate} from 'react'
+
 
 const Update = (props) => {
-    const {id} = props;
+    const {product, setProduct} = props;
+    const [loaded, setLoaded] = useState(false);
     const[productName, setProductName] = useState("");
     const[productPrice, setProductPrice] = useState();
     const[productDescription, setProductDescription] = useState("");
@@ -10,45 +14,29 @@ const Update = (props) => {
     useEffect(() => {
         axios.get('http://localhost:8000/api/product/' + props.id)
         .then(res => {
-            setProductName(res.data.productName);
-            setProductPrice(res.data.productPrice);
-            setProductDescription(res.data.productDescription);
+            setProduct(res.data);
+            setLoaded(true)
+
         })
     }, [])
 
-    const updateProduct = (e) => {
-        e.preventDefault();
-        axios.put('http://localhost:8000/api/product/' + props.id, {
-            productName,
-            productPrice,
-            productDescription
-        })
+    const updateProduct = product => {
+        axios.put('http://localhost:8000/api/product/' + props.id, product)
         .then(res => console.log(res))
     }
 
     return (
-        <form onSubmit={updateProduct}>
-            <div>
-                <h1>Update Product</h1>
-                <p>
-                    <label>Product Name<br />
-                        <input type="text" onChange={(e) => setProductName(e.target.value)} value={productName} />
-                    </label>
-                </p>
-                <p>
-                    <label>Price<br />
-                        <input type="text" onChange={(e) => setProductPrice(e.target.value)} value={productPrice} />
-                    </label>
-                </p>
-                <p>
-                    <label>Product Description<br />
-                        <input type="text" onChange={(e) => setProductDescription(e.target.value)} value={productDescription} />
-                    </label>
-                </p>
-                <input type="submit" />
-            </div>
-            
-        </form>
+        <div>
+            <h1>Update a Product</h1>
+            {loaded && (
+                <ProductForm 
+                onSubmitProp={updateProduct}
+                initialProductName={product.productName}
+                initialProductPrice={product.productPrice}
+                initialProductDescription={product.productDescription}
+                />
+            )}
+        </div>
 
     )
 }
